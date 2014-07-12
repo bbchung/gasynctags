@@ -1,6 +1,6 @@
 if !has('python')
     echohl WarningMsg |
-                \ echomsg "Clighter unavailable: required python2 support" |
+                \ echomsg "Gasynctags unavailable: required python2 support" |
                 \ echohl None
     finish
 endif

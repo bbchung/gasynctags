@@ -1,18 +1,18 @@
 python << endpython
 import subprocess
 import os.path
-proc = None
+gUpdateProc = None
 def start_update_tags():
-    global proc
+    global gUpdateProc
     
-    if proc != None and subprocess.poll(proc) != None:
+    if gUpdateProc != None and gUpdateProc.poll() == None:
         return
 
     with open(os.devnull, 'w') as shutup:
         if os.path.isfile('GTAGS'):
-            proc = subprocess.Popen(["global", "-u"], stdout = shutup, stderr = shutup) 
+            gUpdateProc = subprocess.Popen(["global", "-u"], stdout = shutup, stderr = shutup) 
         else:
-            proc = subprocess.Popen(["gtags"], stdout = shutup, stderr = shutup) 
+            gUpdateProc = subprocess.Popen(["gtags"], stdout = shutup, stderr = shutup) 
 endpython
 
 fun! s:start_update_tags()
@@ -30,8 +30,8 @@ fun! gasynctags#Enable()
     augroup GasyncTagsEnable
         au!
         au FileType c,cpp call s:map_keys()
-        au BufWritePost *.[ch],*.[ch]pp silent! call s:start_update_tags()
-        au VimEnter *.[ch],*.[ch]pp silent! call s:start_update_tags()
+        au BufWritePost *.[ch],*.[ch]pp call s:start_update_tags()
+        au VimEnter *.[ch],*.[ch]pp call s:start_update_tags()
     augroup END
 endf
 
