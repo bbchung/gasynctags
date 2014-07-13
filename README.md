@@ -8,8 +8,7 @@ calls gnu global in background to eliminate performance down of vim.
 gasynctags provides the following features:
 
     * Automatically generates tag asynchronously.
-    * Setup convenient key maps and wrapper function to call cscope functions
-     of vim 
+    * Setup convenient key maps and wrapper function to call cscope functions of vim 
 
 ## Requirements
 
@@ -23,7 +22,7 @@ gasynctags currently works only at linux platform, others have not been tested.
 ## Options
 
 ### g:gasynctags_autostart
-gasynctags will automatically start with Vim if set g:gasynctags_autostart to 1,
+gasynctags will automatically start with Vim if set g:gasynctags_autostart to `1`,
 otherwise, you have to manually start gasynctags by GasynctagsEnable command.
 
 Default: `1`
@@ -51,7 +50,7 @@ let g:gasynctags_global_file = '/opt/global'
 						*'gasynctags_gtags_cscope_file'*
 ### g:gasynctags_gtags_cscope_file
 gasynctags use $PATH/gtags-cscope as the executable file of gnu gtags-global
-if gasynctags_gtags-cscope_file is `''`
+if gasynctags_gtags_cscope_file is `''`
 
 Default: `1`
 ```vim
