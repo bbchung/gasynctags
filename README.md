@@ -1,4 +1,4 @@
-# Clighter: plugin for c-family semantic source code highlighting, based on Clang
+# Clighter: Plugin to automatically setup Gnu Global for Vim
 ## Intro
 gasynctags is a vim plugin that can generate the tag(by Gnu Global) for vim
 automatically and add the generated tag to vim cscope database. Because

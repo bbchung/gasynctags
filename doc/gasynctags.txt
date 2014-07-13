@@ -1,4 +1,4 @@
-*gasynctags.txt*	Plugin to automatically setup GNU GLOBAL for Vim
+*gasynctags.txt*	Plugin to automatically setup Gnu Global for Vim
 *gasynctags*
 
 Author: bbchung (afafaf4@gmail.com)
