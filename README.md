@@ -47,14 +47,13 @@ Default: `''`
 ```vim
 let g:gasynctags_global_file = '/opt/global'
 ```
-						*'gasynctags_gtags_cscope_file'*
 ### g:gasynctags_gtags_cscope_file
 gasynctags use $PATH/gtags-cscope as the executable file of gnu gtags-global
 if gasynctags_gtags_cscope_file is `''`
 
 Default: `1`
 ```vim
-	let g:gasynctags_gtags_cscope_file = '/opt/gtags-cscope'
+let g:gasynctags_gtags_cscope_file = '/opt/gtags-cscope'
 ```
 
 ## Commands
