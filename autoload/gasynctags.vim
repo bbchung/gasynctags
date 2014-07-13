@@ -41,9 +41,12 @@ fun! gasynctags#Disable()
 endf
 
 fun! gasynctags#AddTagAndCall(op)
-    if s:check_and_add_tags() == 1
-	    execute "cs f ".a:op." ".expand("<cword>")
+    if s:check_and_add_tags() == 0
+        echohl WarningMsg | echomsg "gasynctags runtime error: tag is not ready" | echohl None')
+        return
     endif
+
+    execute "cs f ".a:op." ".expand("<cword>")
 endf
 
 fun! s:unmap_keys()
