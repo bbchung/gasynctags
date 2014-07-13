@@ -15,11 +15,10 @@ CONTENTS                                                  *gasynctags-contents*
 ==============================================================================
 						*gasynctags-intro*
 1. Intro~
-gasynctags is a vim plugin that can generate the tag(by GNU GLOBAL) for vim
+gasynctags is a vim plugin that can generate the tag(by Gnu Global) for vim
 automatically and add the generated tag to vim cscope database. Because
 generating the tag for a big project will take very long time, gasynctags
-calls gtags to generate tag in background to eliminate performance down of
-vim.
+calls gtags in background to eliminate performance down of vim.
 
 gasynctags provides the following features:
 
@@ -51,6 +50,9 @@ gasynctags currently works only at linux platform, others have not been tested.
 4. Options~
 
 |'g:gasynctags_autostart'|		Enable the gasynctags when vim start
+|'g:gasynctags_gtags_file'|		Path of Gnu gtags
+|'g:gasynctags_global_file'|		Path of Gnu global
+|'g:gasynctags_gtags_cscope_file'|	Path of Gnu gtags-cscope
 
 						*'gasynctags_autostart'*
 g:gasynctags_autostart~
@@ -61,8 +63,38 @@ Default: 1
 >
 	let g:gasynctags_autostart = 0
 <
+						*'gasynctags_gtags_file'*
+g:gasynctags_gtags_file~
+gasynctags use $PATH/gtags as the executable file of gnu gtags if
+gasynctags_gtags_file is ''
+
+Default: ''
+>
+	let g:gasynctags_gtags_file = '/opt/gtags'
+<
+						*'gasynctags_global_file'*
+g:gasynctags_global_file~
+gasynctags use $PATH/global as the executable file of gnu global if
+gasynctags_global_file is ''
+
+Default: ''
+>
+	let g:gasynctags_global_file = '/opt/global'
+<
+						*'gasynctags_gtags_cscope_file'*
+g:gasynctags_gtags_cscope_file~
+gasynctags use $PATH/gtags-cscope as the executable file of gnu gtags-global
+if gasynctags_gtags-cscope_file is ''
+
+Default: 1
+>
+	let g:gasynctags_gtags_cscope_file = '/opt/gtags-cscope'
+<
+
+
 ==============================================================================
 						*gasynctags-commands*
+5. Commands~
 gasynctags provides command to control it
 
 Enable gasynctags~
@@ -71,7 +103,6 @@ Enable gasynctags~
 <
 
 Disable gasynctags~
-Notice that is will not disable the cursor highlighting.
 >
 	GasynctagsDisable
 <
