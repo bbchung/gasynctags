@@ -5,7 +5,7 @@ gUpdateProc = None
 def start_update_tags():
     global gUpdateProc
     
-    if gUpdateProc != None and gUpdateProc.poll() == None:
+    if gUpdateProc is not None and gUpdateProc.poll() is None:
         return
 
     with open(os.devnull, 'w') as shutup:
