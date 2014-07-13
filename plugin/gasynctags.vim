@@ -22,5 +22,8 @@ augroup GasyncTagsEnable
 let g:loaded_gasynctags = 1
 
 if g:gasynctags_autostart == 1
-    au VimEnter *.[ch],*.[ch]pp call gasynctags#Enable()
+    augroup GasynctagsStart
+        au!
+        au VimEnter *.[ch],*.[ch]pp call gasynctags#Enable()
+    augroup END
 endif
