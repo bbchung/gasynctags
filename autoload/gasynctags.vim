@@ -22,7 +22,7 @@ endpython
 endf
 
 fun! s:check_exe_files()
-    let s:gtags_exe=g:gasynctags_gtags_file
+    let s:gtags_exe=g:gasynctags_gtags_exe
     if s:gtags_exe == ""
         let s:gtags_exe = "gtags"
     endif
@@ -31,7 +31,7 @@ fun! s:check_exe_files()
         return 0
     endif
 
-    let s:global_exe = g:gasynctags_global_file
+    let s:global_exe = g:gasynctags_global_exe
     if s:global_exe == ""
         let s:global_exe = "global"
     endif
@@ -40,7 +40,7 @@ fun! s:check_exe_files()
         return 0
     endif
 
-    let s:gtags_cscope_exe = g:gasynctags_gtags_cscope_file
+    let s:gtags_cscope_exe = g:gasynctags_gtags_cscope_exe
     if s:gtags_cscope_exe == ""
         let s:gtags_cscope_exe = "gtags-cscope"
     endif

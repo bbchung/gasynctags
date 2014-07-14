@@ -10,9 +10,9 @@ if exists('g:loaded_gasynctags')
 endif
 
 let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
-let g:gasynctags_gtags_file = get(g:, 'gasynctags_gtags_file', '')
-let g:gasynctags_global_file = get(g:, 'gasynctags_global_file', '')
-let g:gasynctags_gtags_cscope_file = get(g:, 'gasynctags_gtags_cscope_file', '')
+let g:gasynctags_gtags_exe = get(g:, 'gasynctags_gtags_exe', '')
+let g:gasynctags_global_exe = get(g:, 'gasynctags_global_exe', '')
+let g:gasynctags_gtags_cscope_exe = get(g:, 'gasynctags_gtags_cscope_exe', '')
 
 command! GasyncTagsEnable call gasynctags#Enable()
 command! GasyncTagsDisable call gasynctags#Disable()

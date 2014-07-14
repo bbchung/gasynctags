@@ -30,30 +30,30 @@ Default: `1`
 let g:gasynctags_autostart = 0
 ```
 
-### g:gasynctags_gtags_file
+### g:gasynctags_gtags_exe
 gasynctags use $PATH/gtags as the executable file of gnu gtags if
-gasynctags_gtags_file is `''`
+gasynctags_gtags_exe is `''`
 
 Default: `''`
 ```vim
-let g:gasynctags_gtags_file = '/opt/gtags'
+let g:gasynctags_gtags_exe = '/opt/gtags'
 ```
 
-### g:gasynctags_global_file
+### g:gasynctags_global_exe
 gasynctags use $PATH/global as the executable file of gnu global if
-gasynctags_global_file is `''`
+gasynctags_global_exe is `''`
 
 Default: `''`
 ```vim
-let g:gasynctags_global_file = '/opt/global'
+let g:gasynctags_global_exe = '/opt/global'
 ```
-### g:gasynctags_gtags_cscope_file
+### g:gasynctags_gtags_cscope_exe
 gasynctags use $PATH/gtags-cscope as the executable file of gnu gtags-global
-if gasynctags_gtags_cscope_file is `''`
+if gasynctags_gtags_cscope_exe is `''`
 
 Default: `1`
 ```vim
-let g:gasynctags_gtags_cscope_file = '/opt/gtags-cscope'
+let g:gasynctags_gtags_cscope_exe = '/opt/gtags-cscope'
 ```
 
 ## Commands
