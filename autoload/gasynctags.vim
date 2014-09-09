@@ -32,9 +32,9 @@ fun! gasynctags#Enable()
         return
     endif
 
-    set cscopeprg=gtags-cscope
+    execute "set cscopeprg=".g:gasynctags_gtags_cscope_exe
+    set csto=0
     set cst
-    set csto=1
     set nocsverb
 
     call s:map_keys()
