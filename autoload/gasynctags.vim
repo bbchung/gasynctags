@@ -20,62 +20,9 @@ fun! gasynctags#Enable()
         au BufWritePost * py start_update_tags()
     augroup END
 
-    execute "set cscopeprg=".g:gasynctags_gtags_cscope_exe
-    set csto=0
-    set cst
-    set nocsverb
-
-    call s:map_keys()
     py start_update_tags()
 endf
 
 fun! gasynctags#Disable()
     au! GasyncTagsEnable
-    call s:unmap_keys()
-endf
-
-fun! gasynctags#AddTagAndCall(op)
-    if s:check_and_add_tags() == 0
-        echohl WarningMsg | echomsg "gasynctags runtime error: tag is not ready" | echohl None')
-        return
-    endif
-
-    execute "cs f ".a:op." ".expand("<cword>")
-endf
-
-fun! s:unmap_keys()
-	silent! unmap <C-\>s
-	silent! unmap <C-\>g
-	silent! unmap <C-\>c
-	silent! unmap <C-\>t
-	silent! unmap <C-\>e
-	silent! unmap <C-\>f
-	"silent! unmap <C-\>i
-	silent! unmap <C-\>d
-	silent! unmap <C-\>u
-endf
-
-fun! s:check_and_add_tags()
-	if cscope_connection(1, 'GTAGS')
-        return 1
-    endif
-
-	if filereadable("GTAGS")
-		cs add GTAGS
-        return 1
-	endif
-
-    return 0
-endf
-
-fun! s:map_keys()
-	"silent! nmap <silent><C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-	silent! nmap <silent><C-\>s :call gasynctags#AddTagAndCall('s')<CR>
-	silent! nmap <silent><C-\>g :call gasynctags#AddTagAndCall('g')<CR>
-	silent! nmap <silent><C-\>c :call gasynctags#AddTagAndCall('c')<CR>
-	silent! nmap <silent><C-\>t :call gasynctags#AddTagAndCall('t')<CR>
-	silent! nmap <silent><C-\>e :call gasynctags#AddTagAndCall('e')<CR>
-	silent! nmap <silent><C-\>f :call gasynctags#AddTagAndCall('f')<CR>
-	"silent! nmap <silent><C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	silent! nmap <silent><C-\>d :call gasynctags#AddTagAndCall('d')<CR>
 endf

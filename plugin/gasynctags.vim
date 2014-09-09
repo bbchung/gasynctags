@@ -15,9 +15,8 @@ endif
 let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
 let g:gasynctags_gtags_exe = get(g:, 'gasynctags_gtags_exe', 'gtags')
 let g:gasynctags_global_exe = get(g:, 'gasynctags_global_exe', 'global')
-let g:gasynctags_gtags_cscope_exe = get(g:, 'gasynctags_gtags_cscope_exe', 'gtags-cscope')
 
-if executable(g:gasynctags_gtags_exe) == 0 || executable(g:gasynctags_global_exe) == 0 || executable(g:gasynctags_gtags_cscope_exe) == 0
+if executable(g:gasynctags_gtags_exe) == 0 || executable(g:gasynctags_global_exe) == 0
     echohl WarningMsg |
                 \ echomsg "Gasynctags unavailable: need Gnu Global" |
                 \ echohl None
