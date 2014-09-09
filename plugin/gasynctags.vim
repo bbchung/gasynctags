@@ -5,6 +5,14 @@ if !has('python')
     finish
 endif
 
+if !has('cscope')
+    echohl WarningMsg |
+                \ echomsg "Gasynctags unavailable: required cscope support" |
+                \ echohl None
+    finish
+endif
+
+
 if exists('g:loaded_gasynctags')
       finish
 endif
