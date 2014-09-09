@@ -2,35 +2,23 @@ python << endpython
 import subprocess
 import os.path
 
-gUpdateProc = None
 def start_update_tags():
-    global gUpdateProc
-    
-    if gUpdateProc is not None and gUpdateProc.poll() is None:
+    if hasattr(start_update_tags, 'proc') and start_update_tags.proc.poll() is None:
         return
-
+    
     with open(os.devnull, 'w') as shutup:
         if os.path.isfile('GTAGS'):
-            gUpdateProc = subprocess.Popen([vim.vars['gasynctags_global_exe'], "-u"], stdout = shutup, stderr = shutup) 
+            start_update_tags.proc = subprocess.Popen([vim.vars['gasynctags_global_exe'], "-u"], stdout = shutup, stderr = shutup) 
         else:
-            gUpdateProc = subprocess.Popen([vim.vars['gasynctags_gtags_exe']], stdout = shutup, stderr = shutup) 
+            start_update_tags.proc = subprocess.Popen([vim.vars['gasynctags_gtags_exe']], stdout = shutup, stderr = shutup) 
 endpython
 
-
-fun! s:check_exe_files()
-    return executable(g:gasynctags_gtags_exe) == 1 && executable(g:gasynctags_global_exe) == 1 && executable(g:gasynctags_gtags_cscope_exe) == 1
-endf
 
 fun! gasynctags#Enable()
     augroup GasyncTagsEnable
         au!
         au BufWritePost * py start_update_tags()
     augroup END
-
-    if s:check_exe_files() == 0    
-        echohl ErrorMsg | echomsg "gasynctags: need Gnu Global" | echohl None')
-        return
-    endif
 
     execute "set cscopeprg=".g:gasynctags_gtags_cscope_exe
     set csto=0
