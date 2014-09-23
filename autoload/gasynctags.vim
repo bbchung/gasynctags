@@ -7,10 +7,8 @@ def start_update_tags():
         return
     
     with open(os.devnull, 'w') as shutup:
-        if os.path.isfile('GTAGS'):
-            start_update_tags.proc = subprocess.Popen([vim.vars['gasynctags_global_exe'], "-u"], stdout = shutup, stderr = shutup) 
-        else:
-            start_update_tags.proc = subprocess.Popen([vim.vars['gasynctags_gtags_exe']], stdout = shutup, stderr = shutup) 
+        args = [vim.vars['gasynctags_global_exe'], "-u"] if os.path.isfile('GTAGS') else [vim.vars['gasynctags_gtags_exe']]
+        start_update_tags.proc = subprocess.Popen(args, stdout = shutup, stderr = shutup) 
 endpython
 
 
