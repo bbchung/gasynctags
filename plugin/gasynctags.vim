@@ -6,10 +6,10 @@ if !has('python')
 endif
 
 let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
-let g:gasynctags_gtags_exe = get(g:, 'gasynctags_gtags_exe', 'gtags')
-let g:gasynctags_global_exe = get(g:, 'gasynctags_global_exe', 'global')
+let g:gasynctags_gtags = get(g:, 'gasynctags_gtags', 'gtags')
+let g:gasynctags_global = get(g:, 'gasynctags_global', 'global')
 
-if executable(g:gasynctags_gtags_exe) == 0 || executable(g:gasynctags_global_exe) == 0
+if !executable(g:gasynctags_gtags) || !executable(g:gasynctags_global)
     echohl WarningMsg |
                 \ echomsg "Gasynctags unavailable: need Gnu Global" |
                 \ echohl None
@@ -31,6 +31,6 @@ let g:loaded_gasynctags = 1
 if g:gasynctags_autostart == 1
     augroup GasynctagsStart
         au!
-        au FileType c,cpp call gasynctags#Enable()
+        au FileType c,cpp,python call gasynctags#Enable()
     augroup END
 endif

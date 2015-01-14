@@ -2,13 +2,19 @@ python << endpython
 import subprocess
 import os.path
 
-def start_update_tags():
+def start_update_tags(init=False):
     if hasattr(start_update_tags, 'proc') and start_update_tags.proc.poll() is None:
         return
-    
+
     with open(os.devnull, 'w') as shutup:
-        args = [vim.vars['gasynctags_global_exe'], "-u"] if os.path.isfile('GTAGS') else [vim.vars['gasynctags_gtags_exe']]
-        start_update_tags.proc = subprocess.Popen(args, stdout = shutup, stderr = shutup) 
+        cmd = None
+        if init:
+            cmd = [vim.vars['gasynctags_gtags']]
+        if os.path.isfile('GTAGS') and os.path.isfile('GPATH') and os.path.isfile('GRTAGS'):
+            cmd = [vim.vars['gasynctags_global'], "-u"]
+
+        if cmd is not None:
+            start_update_tags.proc = subprocess.Popen(cmd, stdout = shutup, stderr = shutup)
 endpython
 
 
@@ -22,7 +28,7 @@ fun! gasynctags#Enable()
         au BufWritePost * py start_update_tags()
     augroup END
 
-    py start_update_tags()
+    py start_update_tags(True)
 
     let s:gasynctags_enabled = 1
 endf
