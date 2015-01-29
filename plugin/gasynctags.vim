@@ -31,6 +31,6 @@ let g:loaded_gasynctags = 1
 if g:gasynctags_autostart == 1
     augroup GasynctagsStart
         au!
-        au FileType c,cpp,python call gasynctags#Enable()
+        au FileType c,cpp call gasynctags#Enable()
     augroup END
 endif
