@@ -3,10 +3,6 @@
 gasynctags is a vim plugin that can background update and add the gtag to vim
 automatically
 
-gasynctags provides the following features:
-
-    * Automatically generates tag asynchronously.
-
 ## Requirements
 
 The gasynctags plugin requires the following:
@@ -28,8 +24,5 @@ let g:gasynctags_autostart = 0
 
 ## Commands
 
-## Enable gasynctags
-	`GasynctagsEnable`
-
-## Disable gasynctags
-	`GasynctagsDisable`
+## GasynctagsEnable
+## GasynctagsDisable
