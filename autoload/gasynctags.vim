@@ -1,3 +1,5 @@
+let g:gasync_add_cscope  = get(g:, 'gasync_add_cscope', 0)
+
 fun gasynctags#try_update()
     if exists("s:job") && job_status(s:job) == "run"
         return
@@ -13,7 +15,9 @@ fun gasynctags#Enable()
         return
     endif
 
-    execute 'cs add ' . l:dir . '/GTAGS'
+    if g:gasync_add_cscope == 1
+        execute 'cs add ' . l:dir . '/GTAGS'
+    endif
 
     silent! au! GasyncTagsEnable
     augroup GasyncTagsEnable
