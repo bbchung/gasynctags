@@ -1,5 +1,5 @@
-let g:gasync_add_cscope  = get(g:, 'gasync_add_cscope', 1)
-let g:gasync_map_key  = get(g:, 'gasync_map_key', 1)
+let g:gasync_add_cscope = get(g:, 'gasync_add_cscope', 1)
+let g:gasync_map_key = get(g:, 'gasync_map_key', 1)
 
 fun gasynctags#try_update()
     if exists("s:job") && job_status(s:job) == "run"
@@ -19,7 +19,6 @@ fun gasynctags#Enable()
     if g:gasync_add_cscope == 1
         execute 'cs add ' . l:dir . '/GTAGS'
     endif
-
 
     if g:gasync_map_key == 1
         nmap <silent> <Leader>s :silent! exe "cs f s ".expand('<cword>')<CR> | copen
