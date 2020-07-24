@@ -1,13 +1,25 @@
 let g:gasync_add_cscope = get(g:, 'gasync_add_cscope', 1)
 let g:gasync_map_key = get(g:, 'gasync_map_key', 1)
 
-fun gasynctags#try_update()
+let s:dirty = 0
+fun gasynctags#update_if_need(force)
+    if a:force == 1
+        let s:dirty = 1
+    endif
+
     if exists("s:job") && job_status(s:job) == "run"
         return
     endif
 
-    let l:cmd = "global -u --single-update=\"" . expand("%") . "\""
-    let job = job_start(l:cmd, {"in_io": "null", "out_io": "null", "err_io": "null"})
+    if s:dirty == 1
+        let s:dirty = 0
+        let l:cmd = "global -u --single-update=\"" . expand("%") . "\""
+        let job = job_start(l:cmd, {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+    endif
+endf
+
+fun gasynctags#on_updated(channel, msg)
+    call gasynctags#update_if_need(0)
 endf
 
 fun gasynctags#Enable()
@@ -31,7 +43,7 @@ fun gasynctags#Enable()
     silent! au! GasyncTagsEnable
     augroup GasyncTagsEnable
         au!
-        au BufWritePost * call gasynctags#try_update()
+        au BufWritePost * call gasynctags#update_if_need(1)
     augroup END
 endf
 
