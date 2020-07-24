@@ -2,23 +2,29 @@ let g:gasync_add_cscope = get(g:, 'gasync_add_cscope', 1)
 let g:gasync_map_key = get(g:, 'gasync_map_key', 1)
 
 let s:dirty = 0
+let s:busy = 0
 fun gasynctags#update_if_need(force)
     if a:force == 1
         let s:dirty = 1
     endif
 
-    if exists("s:job") && job_status(s:job) == "run"
+    if s:busy == 1
         return
     endif
 
     if s:dirty == 1
         let s:dirty = 0
-        let l:cmd = "global -u --single-update=\"" . expand("%") . "\""
-        let job = job_start(l:cmd, {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+        let s:busy = 1
+        if has('nvim') == 1
+            call jobstart("global -u --single-update=\"" . expand("%") . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+        else
+            call job_start("global -u --single-update=\"" . expand("%") . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+        endif
     endif
 endf
 
 fun gasynctags#on_updated(channel, msg)
+    let s:busy = 0
     call gasynctags#update_if_need(0)
 endf
 
