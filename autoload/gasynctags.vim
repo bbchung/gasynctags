@@ -35,7 +35,7 @@ fun gasynctags#Enable()
     endif
 
     if g:gasync_add_cscope == 1
-        execute 'cs add ' . l:dir . '/GTAGS'
+        silent exe 'cs add ' . l:dir . '/GTAGS'
     endif
 
     if g:gasync_map_key == 1
