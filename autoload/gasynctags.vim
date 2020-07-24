@@ -39,11 +39,11 @@ fun gasynctags#Enable()
     endif
 
     if g:gasync_map_key == 1
-        nmap <silent> <Leader>s :silent! exe "cs f s ".expand('<cword>')<CR> <BAR> copen
-        vmap <silent> <Leader>s :silent! <C-U> exe "cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> copen
-        nmap <silent> <Leader>g :silent! exe "cs f t ".expand('<cword>')<CR> <BAR> copen
-        vmap <silent> <Leader>g :silent! <C-U> exe "cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> copen
-        command! -nargs=1 S silent! exe "cs f t "<f-args> | copen
+        nmap <silent> <Leader>s :silent! exe "cs f s ".expand('<cword>')<CR> <BAR> :copen <CR>
+        vmap <silent> <Leader>s :silent! <C-U> exe "cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
+        nmap <silent> <Leader>g :silent! exe "cs f t ".expand('<cword>')<CR> <BAR> :copen <CR>
+        vmap <silent> <Leader>g :silent! <C-U> exe "cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
+        command! -nargs=1 S silent! exe "cs f t"<f-args> <BAR> copen
     endif
 
     silent! au! GasyncTagsEnable
