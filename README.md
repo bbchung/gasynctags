@@ -15,6 +15,10 @@ The gasynctags plugin requires the following:
 
 gasynctags is only tested on linux platform.
 
+## Usage
+1. Create gtags database MANUALLY on project root dir.
+2. vi file(s) under project root dir and gasynctags will search gtags db and do its jobs.
+
 ## Options
 
 ### g:gasynctags_autostart
