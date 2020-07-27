@@ -1,16 +1,17 @@
-# Vim plugin to automatically update Gnu Global
+# Vim plugin for Gnu Global(gtags) integration
 ## Intro
-gasynctags is a vim plugin that can background update and add the gtag to vim
-automatically
+gasynctags can add gtags and keep gtags being always updated automatically in background.
+
+## Why
 
 ## Requirements
 
 The gasynctags plugin requires the following:
 
-* Vim version 8.x(or above)
-* Gnu Global
+* Vim version 8.1 or above or neovim
+* Gnu Global binaries 6.6.3 or above
 
-gasynctags currently works only at linux platform, others have not been tested.
+gasynctags is only tested on linux platform.
 
 ## Options
 
@@ -18,6 +19,11 @@ gasynctags currently works only at linux platform, others have not been tested.
 gasynctags will automatically start if set g:gasynctags_autostart to `1`,
 
 Default: `1`
+```vim
+let g:gasynctags_autostart = 0
+```
+### g:gasynctags_map_key
+Enable some useful key maps, set 0 to disable
 ```vim
 let g:gasynctags_autostart = 0
 ```
