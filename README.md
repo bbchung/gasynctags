@@ -31,7 +31,7 @@ let g:gasynctags_autostart = 0
 ### g:gasynctags_map_key
 Enable some useful key maps, set 0 to disable
 ```vim
-let g:gasynctags_autostart = 0
+let g:gasynctags_map_key = 0
 ```
 
 ## Commands

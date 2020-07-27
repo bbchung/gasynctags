@@ -1,45 +1,46 @@
-*gasynctags.txt*	Vim plugin to automatically update Gnu Global
+*gasynctags.txt*	Vim plugin for Gnu Global(gtags) integration
 *gasynctags*
 
 Author: bbchung (afafaf4@gmail.com)
-For Vim version 8.x or above
 
 ==============================================================================
 CONTENTS                                                  *gasynctags-contents*
-1. Intro 			|gasynctags-intro|
-2. gasynctags on the internet	|gasynctags-internet|
-3. Requirements			|gasynctags-requirements|
-4. Options 			|gasynctags-options|
-5. Commands 			|gasynctags-commands|
+Intro 			|gasynctags-intro|
+Requirements			|gasynctags-requirements|
+Options 			|gasynctags-options|
+Commands 			|gasynctags-commands|
 
 ==============================================================================
 						*gasynctags-intro*
-1. Intro~
-gasynctags is a vim plugin that can background update and add the gtag to vim
-automatically
-
-==============================================================================
-						*gasynctags-github*
-2. gasynctags on the github~
+Intro~
+gasynctags can search and add gtags database then keep it being always updated automatically in background.
 
 The Github repository is at:
 >
 	https://github.com/bbchung/gasynctags
 <
+
 ==============================================================================
 						*gasynctags-requirements*
-3. Requirements~
+Requirements~
 
 The gasynctags plugin requires the following:
 
-    * Vim version 8.x(or above)
-    * GNU GLOBAL
+    * Vim version 8.1 or above or neovim
+    * Gnu Global binaries 6.6.3 or above
 
-gasynctags currently works only at linux platform, others have not been tested.
+gasynctags is only tested on linux platform.
+
+==============================================================================
+						*gasynctags-usage*
+Usage~
+
+1. Create gtags database MANUALLY on project root dir.
+2. vi file(s) under project root dir and gasynctags will search gtags db and do its jobs.
 
 ==============================================================================
 						*gasynctags-options*
-4. Options~
+Options~
 
 |'g:gasynctags_autostart'|		Enable the gasynctags when vim start
 
@@ -51,10 +52,17 @@ Default: 1
 >
 	let g:gasynctags_autostart = 0
 <
+
+g:gasynctags_map_key~
+Enable some useful key maps, set 0 to disable
+
+Default: 1
+>
+	let g:gasynctags_map_key = 0
+<
 ==============================================================================
 						*gasynctags-commands*
-5. Commands~
-gasynctags provides command to control it
+Commands~
 
 GasynctagsEnable~
 
