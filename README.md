@@ -1,8 +1,10 @@
 # Vim plugin for Gnu Global(gtags) integration
 ## Intro
-gasynctags can add gtags and keep gtags being always updated automatically in background.
+gasynctags can search and add gtags database then keep it being always updated automatically in background.
 
 ## Why
+[ludovicchabant/vim-gutentags](https://github.com/ludovicchabant/vim-gutentags) provides many features on tags, but I believe
+"It’s best to do one thing really really well", so gasynctags will just focus on gtags, with very lightweight code.
 
 ## Requirements
 
@@ -30,5 +32,5 @@ let g:gasynctags_autostart = 0
 
 ## Commands
 
-## GasynctagsEnable
-## GasynctagsDisable
+### GasynctagsEnable
+### GasynctagsDisable
