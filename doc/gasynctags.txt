@@ -13,7 +13,8 @@ Commands 			|gasynctags-commands|
 ==============================================================================
 						*gasynctags-intro*
 Intro~
-gasynctags can search and add gtags database then keep it being always updated automatically in background.
+gasynctags can search and add gtags database then keep it being always updated 
+automatically in background.
 
 The Github repository is at:
 >
@@ -42,9 +43,6 @@ Usage~
 						*gasynctags-options*
 Options~
 
-|'g:gasynctags_autostart'|		Enable the gasynctags when vim start
-
-						*'gasynctags_autostart'*
 g:gasynctags_autostart~
 gasynctags will automatically start if set g:gasynctags_autostart to `1`,
 
