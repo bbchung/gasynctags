@@ -1,5 +1,4 @@
-let g:gasync_add_cscope = get(g:, 'gasync_add_cscope', 1)
-let g:gasync_map_key = get(g:, 'gasync_map_key', 1)
+let g:gasynctag_map_key = get(g:, 'gasynctag_map_key', 1)
 
 let s:dirty = 0
 let s:busy = 0
@@ -34,11 +33,9 @@ fun gasynctags#Enable()
         return
     endif
 
-    if g:gasync_add_cscope == 1
-        silent exe 'cs add ' . l:dir . '/GTAGS'
-    endif
+    silent exe 'cs add ' . l:dir . '/GTAGS'
 
-    if g:gasync_map_key == 1
+    if g:gasynctag_map_key == 1
         nmap <silent> <Leader>s :silent! exe "cs f s ".expand('<cword>')<CR> <BAR> :copen <CR>
         vmap <silent> <Leader>s :silent! <C-U> exe "cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
         nmap <silent> <Leader>g :silent! exe "cs f t ".expand('<cword>')<CR> <BAR> :copen <CR>
