@@ -1,5 +1,3 @@
-let g:gasynctags_map_key = get(g:, 'gasynctags_map_key', 1)
-
 let s:dirty = 0
 let s:busy = 0
 fun gasynctags#update_if_need(force)
@@ -35,19 +33,13 @@ fun gasynctags#Enable()
 
     silent exe 'cs add ' . l:dir . '/GTAGS'
 
-    if g:gasynctags_map_key == 1
-        nmap <silent> <Leader>s :silent! exe "cs f s ".expand('<cword>')<CR> <BAR> :copen <CR>
-        vmap <silent> <Leader>s :silent! <C-U> exe "cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
-        nmap <silent> <Leader>g :silent! exe "cs f t ".expand('<cword>')<CR> <BAR> :copen <CR>
-        vmap <silent> <Leader>g :silent! <C-U> exe "cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
-        command! -nargs=1 S silent! exe "cs f t"<f-args> <BAR> copen
-    endif
-
     silent! au! GasyncTagsEnable
-    augroup GasyncTagsEnable
-        au!
-        au BufWritePost * call gasynctags#update_if_need(1)
-    augroup END
+    if g:gasynctags_auto_update == 1
+        augroup GasyncTagsEnable
+            au!
+            au BufWritePost * call gasynctags#update_if_need(1)
+        augroup END
+    endif
 endf
 
 fun! gasynctags#Disable()
