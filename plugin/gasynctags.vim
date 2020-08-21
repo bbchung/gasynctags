@@ -1,10 +1,9 @@
 let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
 let g:gasynctags_map_key = get(g:, 'gasynctags_map_key', 1)
-let g:gasynctags_auto_update = get(g:, 'gasynctags_auto_update', 1)
 
-if !executable('gtags') || !executable('global')
+if !executable('global')
     echohl WarningMsg |
-                \ echomsg "Gasynctags unavailable: need Gnu Global" |
+                \ echomsg 'Gasynctags unavailable: global not found under $PATH' |
                 \ echohl None
     finish
 endif

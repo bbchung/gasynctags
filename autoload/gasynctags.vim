@@ -34,12 +34,10 @@ fun gasynctags#Enable()
     silent exe 'cs add ' . l:dir . '/GTAGS'
 
     silent! au! GasyncTagsEnable
-    if g:gasynctags_auto_update == 1
-        augroup GasyncTagsEnable
-            au!
-            au BufWritePost * call gasynctags#update_if_need(1)
-        augroup END
-    endif
+    augroup GasyncTagsEnable
+        au!
+        au BufWritePost * call gasynctags#update_if_need(1)
+    augroup END
 endf
 
 fun! gasynctags#Disable()
