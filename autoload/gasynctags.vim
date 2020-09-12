@@ -43,3 +43,5 @@ endf
 fun! gasynctags#Disable()
     au! GasyncTagsEnable
 endf
+
+au VimLeavePre * let s:busy = 0
