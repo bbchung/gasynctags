@@ -25,7 +25,7 @@ command! GasyncTagsEnable call gasynctags#Enable()
 command! GasyncTagsDisable call gasynctags#Disable()
 
 if g:gasynctags_autostart == 1
-    GasyncTagsEnable
+    au VimEnter * GasyncTagsEnable
 endif
 
 let g:loaded_gasynctags = 1
