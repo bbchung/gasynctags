@@ -3,7 +3,7 @@ let s:busy = 0
 
 fun gasynctags#update(path)
     if s:busy == 1
-        call add(s:pending, path)
+        call add(s:pending, a:path)
         return
     else
         if has('nvim') == 1
