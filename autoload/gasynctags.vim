@@ -1,32 +1,66 @@
-let s:pending = []
+let s:job_queue = []
+let s:pending = {}
 let s:busy = 0
 
-fun gasynctags#update(path)
-    if s:busy == 1
-        if index(s:pending, a:path) == -1
-            call add(s:pending, a:path)
-        endif
-        return
+fun gasynctags#single_update(path)
+    call remove(s:pending, a:path)
+
+    let s:busy = 1
+    if has('nvim') == 1
+        call jobstart("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> gasynctags#on_updated(a:path)}})
     else
-        if has('nvim') == 1
-            call jobstart("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+        call job_start("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> gasynctags#on_updated(a:path)}})
+    endif
+endf
+
+fun gasynctags#global_update()
+    let s:pending = {}
+
+    let s:busy = 1
+    if has('nvim') == 1
+        call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
+    else
+        call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
+    endif
+endf
+
+fun gasynctags#poll_job()
+    if !empty(s:job_queue)
+        s:job_queue[0]()
+        call remove(s:job_queue, 0)
+    endif
+endf
+
+fun gasynctags#update(path)
+    if has_key(s:pending, a:path) == 0
+        let s:pending[a:path] = 1
+        if s:busy == 1
+            call add(s:job_queue, {-> gasynctags#single_update(a:path)})
         else
-            call job_start("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_updated"})
+            call gasynctags#single_update(a:path)
         endif
     endif
 endf
 
-fun gasynctags#on_updated(channel, msg)
-    let s:busy = 0
-    if !empty(s:pending)
-        call gasynctags#update(s:pending[0])
-        call remove(s:pending, 0)
+fun gasynctags#init()
+    if s:busy == 1
+        call add(s:job_queue, {-> gasynctags#global_update()})
+    else
+        call gasynctags#global_update()
     endif
+endf
+
+fun gasynctags#on_updated(path)
+    let s:busy = 0
+
+    call gasynctags#poll_job()
 endf
 
 fun gasynctags#on_init(channel, msg)
+    let s:busy = 0
+
     silent exe 'cs add ' . s:dir . '/GTAGS'
-    call gasynctags#on_updated(a:channel, a:msg)
+    call gasynctags#poll_job()
 endf
 
 fun gasynctags#Enable()
@@ -35,12 +69,7 @@ fun gasynctags#Enable()
         return
     endif
 
-    let s:busy = 1
-    if has('nvim') == 1
-        call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
-    else
-        call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
-    endif
+    call gasynctags#init()
 
     silent! au! GasyncTagsEnable
     augroup GasyncTagsEnable
@@ -50,5 +79,6 @@ fun gasynctags#Enable()
 endf
 
 fun! gasynctags#Disable()
+    let s:job_queue = []
     au! GasyncTagsEnable
 endf
