@@ -28,7 +28,7 @@ endf
 
 fun gasynctags#poll_job()
     if !empty(s:job_queue)
-        s:job_queue[0]()
+        call s:job_queue[0]()
         call remove(s:job_queue, 0)
     endif
 endf
