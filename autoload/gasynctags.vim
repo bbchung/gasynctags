@@ -3,7 +3,9 @@ let s:pending = {}
 let s:busy = 0
 
 fun gasynctags#single_update(path)
-    call remove(s:pending, a:path)
+    if has_key(s:pending, a:path) == 1
+        call remove(s:pending, a:path)
+    endif
 
     let s:busy = 1
     if has('nvim') == 1
@@ -80,5 +82,6 @@ endf
 
 fun! gasynctags#Disable()
     let s:job_queue = []
+    let s:pending = {}
     au! GasyncTagsEnable
 endf
