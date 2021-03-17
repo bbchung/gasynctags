@@ -2,27 +2,27 @@ let s:job_queue = []
 let s:pending = {}
 let s:busy = 0
 
-fun gasynctags#single_update(path)
+fun gasynctags#single_update(path, cb)
     if has_key(s:pending, a:path) == 1
         call remove(s:pending, a:path)
     endif
 
     let s:busy = 1
     if has('nvim') == 1
-        call jobstart("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> gasynctags#on_updated(a:path)}})
+        call jobstart("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
     else
-        call job_start("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> gasynctags#on_updated(a:path)}})
+        call job_start("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
     endif
 endf
 
-fun gasynctags#global_update()
+fun gasynctags#global_update(cb)
     let s:pending = {}
 
     let s:busy = 1
     if has('nvim') == 1
-        call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
+        call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     else
-        call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : "gasynctags#on_init"})
+        call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     endif
 endf
 
@@ -37,18 +37,18 @@ fun gasynctags#update(path)
     if has_key(s:pending, a:path) == 0
         let s:pending[a:path] = 1
         if s:busy == 1
-            call add(s:job_queue, {-> gasynctags#single_update(a:path)})
+            call add(s:job_queue, {-> gasynctags#single_update(a:path, {path -> gasynctags#on_updated(path)})})
         else
-            call gasynctags#single_update(a:path)
+            call gasynctags#single_update(a:path, {path -> gasynctags#on_updated(path)})
         endif
     endif
 endf
 
 fun gasynctags#init()
     if s:busy == 1
-        call add(s:job_queue, {-> gasynctags#global_update()})
+        call add(s:job_queue, {-> gasynctags#global_update("gasynctags#on_init")})
     else
-        call gasynctags#global_update()
+        call gasynctags#global_update("gasynctags#on_init")
     endif
 endf
 
