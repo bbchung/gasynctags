@@ -4,7 +4,7 @@ gasynctags can search and add gtags database then keep it being always updated a
 
 ## Why
 [ludovicchabant/vim-gutentags](https://github.com/ludovicchabant/vim-gutentags) provides many features on tags, but I believe
-"It’s best to do one thing really really well", so gasynctags will just focus on gtags, with very lightweight code.
+"It’s best to do one thing really really well", so gasynctags just focus on gtags, with very lightweight code.
 
 ## Requirements
 
@@ -16,8 +16,8 @@ The gasynctags plugin requires the following:
 gasynctags is only tested on linux platform.
 
 ## Usage
-1. Create gtags database MANUALLY on project root dir.
-2. vi file(s) under project root dir and gasynctags will search gtags db and do its jobs.
+1. Create gtags db MANUALLY on your project folder.
+2. gasynctags will search gtags db and add it to vim. 
 
 ## Options
 
