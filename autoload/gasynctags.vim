@@ -1,3 +1,4 @@
+let s:enabled = 0
 let s:job_queue = []
 let s:pending = {}
 let s:busy = 0
@@ -66,22 +67,29 @@ fun gasynctags#on_init(channel, msg)
 endf
 
 fun gasynctags#Enable()
+    if s:enabled == 1
+        return
+    endif
+
     let s:dir = trim(system('global -p'))
     if v:shell_error != 0
         return
     endif
 
-    call gasynctags#init()
+    silent! call gasynctags#init()
 
     silent! au! GasyncTagsEnable
     augroup GasyncTagsEnable
         au!
         au BufWritePost * call gasynctags#update(expand("%"))
     augroup END
+
+    let s:enabled = 1
 endf
 
 fun! gasynctags#Disable()
     let s:job_queue = []
     let s:pending = {}
-    au! GasyncTagsEnable
+    silent! au! GasyncTagsEnable
+    let s:enabled = 0
 endf
