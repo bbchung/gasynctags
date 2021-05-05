@@ -62,7 +62,7 @@ endf
 fun gasynctags#on_init(channel, msg)
     let s:busy = 0
 
-    silent exe 'cs add ' . s:dir . '/GTAGS'
+    exe 'cs add ' . s:dir . '/GTAGS'
     call gasynctags#poll_job()
 endf
 
@@ -76,9 +76,9 @@ fun gasynctags#Enable()
         return
     endif
 
-    silent! call gasynctags#init()
+    call gasynctags#init()
 
-    silent! au! GasyncTagsEnable
+    silent! au GasyncTagsEnable
     augroup GasyncTagsEnable
         au!
         au BufWritePost * call gasynctags#update(expand("%"))
@@ -90,6 +90,6 @@ endf
 fun! gasynctags#Disable()
     let s:job_queue = []
     let s:pending = {}
-    silent! au! GasyncTagsEnable
+    silent! au GasyncTagsEnable
     let s:enabled = 0
 endf

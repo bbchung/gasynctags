@@ -21,24 +21,11 @@ if g:gasynctags_map_key == 1
     command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen
 endif
 
-
-fun s:enable()
-    silent! au! GasyncTagsStarter
-    augroup GasyncTagsStarter
-        au FileType c,cpp call gasynctags#Enable()
-    augroup END
-endfun
-
-fun s:disable()
-    silent! au! GasyncTagsStarter
-    call gasynctags#Disable()
-endfun
-
-command! GasyncTagsEnable call s:enable()
-command! GasyncTagsDisable call s:disable()
+command! GasyncTagsEnable gasynctags#Enable()
+command! GasyncTagsDisable gasynctags#Disable()
 
 if g:gasynctags_autostart == 1
-    call s:enable()
+    call gasynctags#Enable()
 endif
 
 let g:loaded_gasynctags = 1
