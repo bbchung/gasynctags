@@ -21,9 +21,9 @@ fun gasynctags#global_update(cb)
 
     let s:busy = 1
     if has('nvim') == 1
-        call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     else
-        call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     endif
 endf
 
@@ -87,7 +87,7 @@ fun gasynctags#Enable()
     let s:enabled = 1
 endf
 
-fun! gasynctags#Disable()
+fun gasynctags#Disable()
     let s:job_queue = []
     let s:pending = {}
     silent! au GasyncTagsEnable
