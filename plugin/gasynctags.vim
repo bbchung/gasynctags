@@ -21,8 +21,8 @@ if g:gasynctags_map_key == 1
     command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen
 endif
 
-command! GasyncTagsEnable gasynctags#Enable()
-command! GasyncTagsDisable gasynctags#Disable()
+command! GasyncTagsEnable call gasynctags#Enable()
+command! GasyncTagsDisable call gasynctags#Disable()
 
 if g:gasynctags_autostart == 1
     au VimEnter * call gasynctags#Enable()
