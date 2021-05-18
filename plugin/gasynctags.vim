@@ -13,11 +13,17 @@ if exists('g:loaded_gasynctags')
       finish
 endif
 
+fun CopenRun(cmd)
+    let expand = a:cmd
+    copen
+    silent! exe expand
+endf
+
 if g:gasynctags_map_key == 1
-    nmap <silent> <Leader>s :silent! cexpr[] <BAR> exe "cs f s ".expand('<cword>')<CR> <BAR> :copen <CR>
-    vmap <silent> <Leader>s :silent! <C-U> cexpr[] <BAR> exe "cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
-    nmap <silent> <Leader>g :silent! cexpr[] <BAR> exe "cs f t ".expand('<cword>')<CR> <BAR> :copen <CR>
-    vmap <silent> <Leader>g :silent! <C-U> cexpr[] <BAR> exe "cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]<CR> <BAR> :copen <CR>
+    nmap <silent> <Leader>s :call CopenRun("cs f s ".expand('<cword>')) <CR>
+    vmap <silent> <Leader>s :call CopenRun("cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]) <CR>
+    nmap <silent> <Leader>g :call CopenRun("cs f t ".expand('<cword>')) <CR>
+    vmap <silent> <Leader>g :call CopenRun("cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]) <CR>
     command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen
 endif
 
