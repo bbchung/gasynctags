@@ -79,17 +79,17 @@ fun gasynctags#Enable()
     call gasynctags#init()
 
     silent! au GasyncTagsEnable
-    augroup GasyncTagsEnable
-        au!
-        au BufWritePost * call gasynctags#update(expand("%"))
-    augroup END
-
     let s:enabled = 1
 endf
 
 fun gasynctags#Disable()
     let s:job_queue = []
     let s:pending = {}
-    silent! au GasyncTagsEnable
+    silent! au! GasyncTagsEnable
     let s:enabled = 0
 endf
+
+augroup GasyncTagsEnable
+    au!
+    au BufWritePost * call gasynctags#update(expand("%"))
+augroup END

@@ -14,9 +14,8 @@ if exists('g:loaded_gasynctags')
 endif
 
 fun CopenRun(cmd)
-    let expand = a:cmd
     copen
-    silent! exe expand
+    silent! exe a:cmd
 endf
 
 if g:gasynctags_map_key == 1
