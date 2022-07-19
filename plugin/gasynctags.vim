@@ -14,7 +14,7 @@ if exists('g:loaded_gasynctags')
 endif
 
 fun CopenRun(cmd)
-    copen
+    copen 10
     silent! exe a:cmd
 endf
 
@@ -23,7 +23,7 @@ if g:gasynctags_map_key == 1
     vmap <silent> <Leader>s :call CopenRun("cs f s ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]) <CR>
     nmap <silent> <Leader>g :call CopenRun("cs f t ".expand('<cword>')) <CR>
     vmap <silent> <Leader>g :call CopenRun("cs f t ".getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1]) <CR>
-    command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen
+    command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen 10
 endif
 
 command! GasyncTagsEnable call gasynctags#Enable()
