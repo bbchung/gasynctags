@@ -36,28 +36,26 @@ gasynctags is only tested on linux platform.
 						*gasynctags-usage*
 Usage~
 
-1. Create gtags database MANUALLY on project root dir.
-2. vi file(s) under project root dir and gasynctags will search gtags db and do its jobs.
+Manually generate gtags db at project/root dir at first time for gasynctags
 
 ==============================================================================
 						*gasynctags-options*
 Options~
 
+g:global_path~
+config gnu global path
+
+Default: 'global'
+
 g:gasynctags_autostart~
 gasynctags will automatically start if set g:gasynctags_autostart to `1`,
 
 Default: 1
->
-	let g:gasynctags_autostart = 0
-<
 
 g:gasynctags_map_key~
 Enable some useful key maps, set 0 to disable
 
 Default: 1
->
-	let g:gasynctags_map_key = 0
-<
 ==============================================================================
 						*gasynctags-commands*
 Commands~

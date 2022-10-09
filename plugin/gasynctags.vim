@@ -1,9 +1,10 @@
 let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
 let g:gasynctags_map_key = get(g:, 'gasynctags_map_key', 1)
+let g:global_path = get(g:, 'global_path', 'global')
 
-if !executable('global')
+if !executable(g:global_path)
     echohl WarningMsg |
-                \ echomsg 'Gasynctags unavailable: global not found under $PATH' |
+                \ echomsg 'Gasynctags unavailable: global not found' |
                 \ echohl None
     finish
 endif

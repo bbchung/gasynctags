@@ -10,9 +10,9 @@ fun gasynctags#single_update(path, cb)
 
     let s:busy = 1
     if has('nvim') == 1
-        call jobstart("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
+        call jobstart(g:global_path." -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
     else
-        call job_start("global -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
+        call job_start(g:global_path." -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
     endif
 endf
 
@@ -21,9 +21,9 @@ fun gasynctags#global_update(cb)
 
     let s:busy = 1
     if has('nvim') == 1
-        silent! call jobstart("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! call jobstart(g:global_path." -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     else
-        silent! call job_start("global -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! call job_start(g:global_path." -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
     endif
 endf
 
@@ -70,7 +70,7 @@ fun gasynctags#Enable()
         return
     endif
 
-    let s:dir = trim(system('global -p'))
+    let s:dir = trim(system(g:global_path." -p"))
     if v:shell_error != 0
         return
     endif
