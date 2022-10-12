@@ -1,6 +1,10 @@
-let g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
-let g:gasynctags_map_key = get(g:, 'gasynctags_map_key', 1)
-let g:global_path = get(g:, 'global_path', 'global')
+vim9script
+
+import autoload 'gasynctags.vim'
+
+g:gasynctags_autostart = get(g:, 'gasynctags_autostart', 1)
+g:gasynctags_map_key = get(g:, 'gasynctags_map_key', 1)
+g:global_path = get(g:, 'global_path', 'global')
 
 if !executable(g:global_path)
     echohl WarningMsg |
@@ -22,11 +26,11 @@ if g:gasynctags_map_key == 1
     command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen 10
 endif
 
-command! GasyncTagsEnable call gasynctags#Enable()
-command! GasyncTagsDisable call gasynctags#Disable()
+command! GasyncTagsEnable gasynctags.Enable()
+command! GasyncTagsDisable gasynctags.Disable()
 
 if g:gasynctags_autostart == 1
-    au VimEnter * call gasynctags#Enable()
+    au VimEnter * gasynctags.Enable()
 endif
 
-let g:loaded_gasynctags = 1
+g:loaded_gasynctags = 1

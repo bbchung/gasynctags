@@ -1,95 +1,109 @@
-let s:enabled = 0
-let s:job_queue = []
-let s:pending = {}
-let s:busy = 0
+vim9script
 
-fun gasynctags#single_update(path, cb)
-    if has_key(s:pending, a:path) == 1
-        call remove(s:pending, a:path)
+var enabled = 0
+var job_queue = []
+var pending = {}
+var busy = 0
+
+def SingleUpdate(path: string, Cb: func)
+    if has_key(pending, path) == 1
+        remove(pending, path)
     endif
 
-    let s:busy = 1
+    busy = 1
     if has('nvim') == 1
-        call jobstart(g:global_path." -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
+        jobstart(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+            Cb(path)
+        }})
     else
-        call job_start(g:global_path." -u --single-update=\"" . a:path . "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : {channel, msg -> a:cb(a:path)}})
+        job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+            Cb(path)
+        }})
     endif
-endf
+enddef
 
-fun gasynctags#global_update(cb)
-    let s:pending = {}
+def GlobalUpdate(Cb: func)
+    pending = {}
 
-    let s:busy = 1
+    busy = 1
     if has('nvim') == 1
-        silent! call jobstart(g:global_path." -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! jobstart(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": Cb})
     else
-        silent! call job_start(g:global_path." -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb" : a:cb})
+        silent! job_start(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": Cb})
     endif
-endf
+enddef
 
-fun gasynctags#poll_job()
-    if !empty(s:job_queue)
-        call s:job_queue[0]()
-        call remove(s:job_queue, 0)
+def PullJob()
+    if !empty(job_queue)
+        job_queue[0]()
+        remove(job_queue, 0)
     endif
-endf
+enddef
 
-fun gasynctags#update(path)
-    if has_key(s:pending, a:path) == 0
-        let s:pending[a:path] = 1
-        if s:busy == 1
-            call add(s:job_queue, {-> gasynctags#single_update(a:path, {path -> gasynctags#on_updated(path)})})
+def Update(path: string)
+    if has_key(pending, path) == 0
+        pending[path] = 1
+        if busy == 1
+            add(job_queue, () => {
+                SingleUpdate(path, (updated_path) => {
+                    OnUpdated(updated_path)
+                })
+            })
         else
-            call gasynctags#single_update(a:path, {path -> gasynctags#on_updated(path)})
+            SingleUpdate(path, (updated_path) => {
+                OnUpdated(updated_path)
+            })
         endif
     endif
-endf
+enddef
 
-fun gasynctags#init()
-    if s:busy == 1
-        call add(s:job_queue, {-> gasynctags#global_update("gasynctags#on_init")})
+def Init()
+    if busy == 1
+        add(job_queue, () => {
+            GlobalUpdate(OnInit)
+        })
     else
-        call gasynctags#global_update("gasynctags#on_init")
+        GlobalUpdate(OnInit)
     endif
-endf
+enddef
 
-fun gasynctags#on_updated(path)
-    let s:busy = 0
+def OnUpdated(path: string)
+    busy = 0
 
-    call gasynctags#poll_job()
-endf
+    PullJob()
+enddef
 
-fun gasynctags#on_init(channel, msg)
-    let s:busy = 0
+def OnInit(job: job, ec: number)
+    busy = 0
 
-    call gasynctags#poll_job()
-endf
+    PullJob()
+enddef
 
-fun gasynctags#Enable()
-    if s:enabled == 1
+export def Enable()
+    if enabled == 1
         return
     endif
 
-    let s:dir = trim(system(g:global_path." -p"))
+    var dir = trim(system(g:global_path .. " -p"))
     if v:shell_error != 0
         return
     endif
 
-    silent! exe 'cs add ' . s:dir . '/GTAGS'
-    call gasynctags#init()
+    silent! exe 'cs add ' .. dir .. '/GTAGS'
+    Init()
 
     silent! au GasyncTagsEnable
-    let s:enabled = 1
-endf
+    enabled = 1
+enddef
 
-fun gasynctags#Disable()
-    let s:job_queue = []
-    let s:pending = {}
+export def Disable()
+    job_queue = []
+    pending = {}
     silent! au! GasyncTagsEnable
-    let s:enabled = 0
-endf
+    enabled = 0
+enddef
 
 augroup GasyncTagsEnable
     au!
-    au BufWritePost * call gasynctags#update(expand("%"))
+    au BufWritePost * Update(expand("%"))
 augroup END
