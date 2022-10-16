@@ -13,10 +13,10 @@ def TryDoJob()
 enddef
 
 def Update(path: string)
-    if has_key(scheduled, path) == 0
+    if !has_key(scheduled, path) || scheduled[path] == 0
         scheduled[path] = 1
         add(job_queue, () => {
-            remove(scheduled, path)
+            scheduled[path] = 0
 
             busy = 1
             job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
