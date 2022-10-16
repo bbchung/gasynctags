@@ -15,15 +15,21 @@ endif
 
 
 if exists('g:loaded_gasynctags')
-      finish
+    finish
 endif
+
+def SearchText(text: string)
+    cexpr []
+    exe "cs f t " .. text
+    copen 10
+enddef
 
 if g:gasynctags_map_key == 1
     nmap <silent> <Leader>s :<C-R>=printf("cs f s %s", expand("<cword>"))<CR><CR> :copen 10<CR>
     vmap <silent> <Leader>s :<C-U><C-R>=printf("cs f s %s", getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1])<CR><CR> :copen 10<CR>
     nmap <silent> <Leader>g :<C-R>=printf("cs f t %s", expand('<cword>'))<CR><CR> :copen 10<CR>
     vmap <silent> <Leader>g :<C-U><C-R>=printf("cs f t %s", getline("'<")[getpos("'<")[2]-1:getpos("'>")[2] - 1])<CR><CR> :copen 10<CR>
-    command! -nargs=1 S silent! cexpr[] <BAR> exe "cs f t"<f-args> <BAR> copen 10
+    command! -nargs=1 S silent! SearchText(<f-args>)
 endif
 
 command! GasyncTagsEnable gasynctags.Enable()
