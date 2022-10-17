@@ -36,7 +36,7 @@ command! GasyncTagsEnable gasynctags.Enable()
 command! GasyncTagsDisable gasynctags.Disable()
 
 if g:gasynctags_autostart == 1
-    au FileType c,cpp gasynctags.Enable()
+    au VimEnter * gasynctags.Enable()
 endif
 
 g:loaded_gasynctags = 1
