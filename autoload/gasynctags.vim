@@ -1,33 +1,31 @@
 vim9script
 
 var enabled = 0
-var job_queue = []
-var scheduled = {}
-var busy = 0
+var job_queue: list<func>
+var dirty: dict<bool>
+var global_job = null_job
 
-def TryDoJob()
-    if !busy && !empty(job_queue)
+def RunNextJob()
+    if !job_queue->empty()
         job_queue[0]()
-        remove(job_queue, 0)
+        job_queue->remove(0)
     endif
 enddef
 
 def Update(path: string)
-    if !has_key(scheduled, path) || scheduled[path] == 0
-        scheduled[path] = 1
-        add(job_queue, () => {
-            scheduled[path] = 0
-
-            busy = 1
-            job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
-                busy = 0
-                TryDoJob()
+    if !dirty->has_key(path) || !dirty[path]
+        dirty[path] = true
+        job_queue->add(() => {
+            dirty[path] = false
+            global_job = job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+                RunNextJob()
             }})
         })
     endif
 
-
-    TryDoJob()
+    if global_job->job_status() != "run"
+        RunNextJob()
+    endif
 enddef
 
 export def Enable()
@@ -41,14 +39,14 @@ export def Enable()
     endif
 
     silent! exe 'cs add ' .. dir .. '/GTAGS'
-    add(job_queue, () => {
-        busy = 1
-        silent! job_start(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
-            busy = 0
-            TryDoJob()
+    job_queue->add(() => {
+        global_job = job_start(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+            RunNextJob()
         }})
     })
-    TryDoJob()
+    if global_job->job_status() != "run"
+        RunNextJob()
+    endif
 
     silent! au GasyncTagsEnable
     enabled = 1
@@ -56,7 +54,7 @@ enddef
 
 export def Disable()
     job_queue = []
-    scheduled = {}
+    dirty = {}
     silent! au! GasyncTagsEnable
     enabled = 0
 enddef
