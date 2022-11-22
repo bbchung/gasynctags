@@ -3,6 +3,7 @@ vim9script
 var enabled = 0
 var job_queue: list<func>
 var dirty: dict<bool>
+var global_job = null_job
 
 def RunNextJob()
     if !job_queue->empty()
@@ -16,13 +17,13 @@ def Update(path: string)
         dirty[path] = true
         job_queue->add(() => {
             dirty[path] = false
-            job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+            global_job = job_start(g:global_path .. " -u --single-update=\"" .. path .. "\"", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
                 RunNextJob()
             }})
         })
     endif
 
-    if job_queue->len() == 1
+    if global_job->job_status() != "run"
         RunNextJob()
     endif
 enddef
@@ -39,11 +40,11 @@ export def Enable()
 
     silent! exe 'cs add ' .. dir .. '/GTAGS'
     job_queue->add(() => {
-        job_start(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
+        global_job = job_start(g:global_path .. " -u", {"in_io": "null", "out_io": "null", "err_io": "null", "exit_cb": (job, ec) => {
             RunNextJob()
         }})
     })
-    if job_queue->len() == 1
+    if global_job->job_status() != "run"
         RunNextJob()
     endif
 
